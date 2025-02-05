@@ -1,0 +1,5 @@
+.vscode
+build
+opencv
+*.dll
+*.MP4
