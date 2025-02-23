@@ -10,6 +10,10 @@ add_executable(fireflies list.cpp
 
 target_include_directories(fireflies PRIVATE opencv/build/include)
 
-target_link_directories(fireflies PRIVATE opencv/build/x64/vc16/lib)
+if (WIN32)
+    target_link_directories(fireflies PRIVATE opencv/build/x64/vc16/lib)
+else()
+    target_link_directories(fireflies PRIVATE opencv/build/lib)
+endif()
 
 target_link_libraries(fireflies opencv_world4110d)

@@ -178,8 +178,6 @@ int main(int argc, char** argv)
             max_b = (max_x + max_m) * 255;
         }
 
-        printf("(%d, %d, %d) - (%d, %d, %d)\n", min_r, min_g, min_b, max_r, max_g, max_b);
-
         for (unsigned int i = 0; i < width * height; i++)
         {
             const unsigned int r = mat.data[i * 3 + 2];
