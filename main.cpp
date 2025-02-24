@@ -1,6 +1,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
+#include <iostream>
 #include <string>
 
 #include <opencv2/highgui.hpp>
@@ -227,6 +228,11 @@ int main(int argc, char** argv)
         {
             cv::rectangle(mat, cv::Rect(current->ax * xscale - 7, current->ay * yscale - 7, 14, 14), cv::Scalar(0, 0, 255, 255));
             cv::putText(mat, std::to_string(current->id), cv::Point(current->ax * xscale + 7, current->ay * yscale + 7), cv::FONT_HERSHEY_DUPLEX, 0.3, cv::Scalar(0, 0, 255, 255));
+
+            if (current->id < 10)
+            {
+                std::cout << current->id << std::endl;
+            }
 
             current = current->next;
         }

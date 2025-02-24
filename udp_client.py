@@ -1,11 +1,10 @@
 import socket
 import time
-import json
 import random
 
 # Socket Parameters
-HOST = "10.0.0.42" 
-PORT = 8080         
+HOST = "10.0.0.42"
+PORT = 8080
 
 # Socket Initialization
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -30,29 +29,33 @@ print(mapping)
 # Event-Based Messaging System
 
 while (True):
-    
-    print("Please enter Firefly IDs separated by commas")
-    user_input = input()
-    start_time = time.time()
-    input_firefly_ids = list(map(int, user_input.split(',')))
+
+    # print("Please enter Firefly IDs separated by commas")
+    # user_input = input()
+    # input_firefly_ids = list(map(int, user_input.split(',')))
+    input_firefly_ids = [i for i in range(10)]
     input_led_ids = [mapping[firefly_id] for firefly_id in input_firefly_ids]
 
     print(f"Current simulation input: {input_firefly_ids}")
-    print(f"LED output indicies: {input_led_ids}")
+    print(f"LED output indices: {input_led_ids}")
 
-    message = input_led_ids
-    encoded_message = json.dumps(message).encode('utf-8')
-    client_socket.sendto(encoded_message, (HOST, PORT))
+    while True:
+        start_time = time.time()
 
-    # Receive response
-    data, server_address = client_socket.recvfrom(1024)
-    end_time = time.time()
+        text = input()
 
-    # Print response and latency
-    print(f"Response from server: {data.decode()}")
-    latency = (end_time - start_time) * 1000  # Convert to milliseconds
-    print(f"Round-trip latency: {latency:.2f} ms")
+        encoded_message = text.encode('utf-8')
+        client_socket.sendto(encoded_message, (HOST, PORT))
 
-    time.sleep(1)
+        # Receive response
+        data, server_address = client_socket.recvfrom(1024)
+        end_time = time.time()
+
+        # Print response and latency
+        print(f"Response from server: {data.decode()}")
+        latency = (end_time - start_time) * 1000  # Convert to milliseconds
+        print(f"Round-trip latency: {latency:.2f} ms")
+
+    # time.sleep(1)
 
 client_socket.close()

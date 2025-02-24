@@ -8,12 +8,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_executable(fireflies list.cpp
                          main.cpp)
 
-target_include_directories(fireflies PRIVATE opencv/build/include)
-
 if (WIN32)
-    target_link_directories(fireflies PRIVATE opencv/build/x64/vc16/lib)
-else()
-    target_link_directories(fireflies PRIVATE opencv/build/lib)
-endif()
+    target_include_directories(fireflies PRIVATE opencv/build/include)
 
-target_link_libraries(fireflies opencv_world4110d)
+    target_link_directories(fireflies PRIVATE opencv/build/x64/vc16/lib)
+    target_link_libraries(fireflies opencv_world4110d)
+else()
+    target_include_directories(fireflies PRIVATE /opt/homebrew/Cellar/opencv/4.11.0_1/include/opencv4)
+
+    target_link_directories(fireflies PRIVATE /opt/homebrew/Cellar/opencv/4.11.0_1/lib)
+    target_link_libraries(fireflies opencv_core opencv_highgui opencv_imgproc opencv_videoio)
+endif()
