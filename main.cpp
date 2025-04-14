@@ -26,19 +26,13 @@ int main(int argc, char** argv)
     cv::namedWindow(window_title);
     cv::moveWindow(window_title, 100, 100);
 
-    int min_hue = 59;
-    int max_hue = 71;
-    int min_sat = 19;
-    int max_sat = 100;
-    int min_val = 60;
-    int max_val = 100;
+    int hue = 65;
+    int value = 90;
+    int spread = 15;
 
-    cv::createTrackbar("Min Hue", window_title, &min_hue, 360, resetList);
-    cv::createTrackbar("Max Hue", window_title, &max_hue, 360, resetList);
-    cv::createTrackbar("Min Sat", window_title, &min_sat, 100, resetList);
-    cv::createTrackbar("Max Sat", window_title, &max_sat, 100, resetList);
-    cv::createTrackbar("Min Val", window_title, &min_val, 100, resetList);
-    cv::createTrackbar("Max Val", window_title, &max_val, 100, resetList);
+    cv::createTrackbar("Hue", window_title, &hue, 360, resetList);
+    cv::createTrackbar("Value", window_title, &value, 100, resetList);
+    cv::createTrackbar("Spread", window_title, &spread, 100, resetList);
 
     cv::VideoCapture cap("C0004_cutM.MP4");
 
@@ -79,113 +73,18 @@ int main(int argc, char** argv)
             continue;
         }
 
-        unsigned int min_r;
-        unsigned int max_r;
-        unsigned int min_g;
-        unsigned int max_g;
-        unsigned int min_b;
-        unsigned int max_b;
+        const float kr = fmodf(5 + hue / 60.0f, 6);
+        const float kg = fmodf(3 + hue / 60.0f, 6);
 
-        const float min_c = (min_val / 100.0f) * (min_sat / 100.0f);
-        const float max_c = (max_val / 100.0f) * (max_sat / 100.0f);
-
-        const float min_x = min_c * (1 - fabsf(fmodf(min_hue / 60.0f, 2) - 1));
-        const float max_x = max_c * (1 - fabsf(fmodf(max_hue / 60.0f, 2) - 1));
-
-        const float min_m = (min_val / 100.0f) - min_c;
-        const float max_m = (max_val / 100.0f) - max_c;
-
-        if (min_hue < 60)
-        {
-            min_r = (min_c + min_m) * 255;
-            min_g = (min_x + min_m) * 255;
-            min_b = min_m * 255;
-        }
-
-        else if (min_hue < 120)
-        {
-            min_r = (min_x + min_m) * 255;
-            min_g = (min_c + min_m) * 255;
-            min_b = min_m * 255;
-        }
-
-        else if (min_hue < 180)
-        {
-            min_r = min_m * 255;
-            min_g = (min_c + min_m) * 255;
-            min_b = (min_x + min_m) * 255;
-        }
-
-        else if (min_hue < 240)
-        {
-            min_r = min_m * 255;
-            min_g = (min_x + min_m) * 255;
-            min_b = (min_c + min_m) * 255;
-        }
-
-        else if (min_hue < 300)
-        {
-            min_r = (min_x + min_m) * 255;
-            min_g = min_m * 255;
-            min_b = (min_c + min_m) * 255;
-        }
-
-        else
-        {
-            min_r = (min_c + min_m) * 255;
-            min_g = min_m * 255;
-            min_b = (min_x + min_m) * 255;
-        }
-
-        if (max_hue < 60)
-        {
-            max_r = (max_c + max_m) * 255;
-            max_g = (max_x + max_m) * 255;
-            max_b = max_m * 255;
-        }
-
-        else if (max_hue < 120)
-        {
-            max_r = (max_x + max_m) * 255;
-            max_g = (max_c + max_m) * 255;
-            max_b = max_m * 255;
-        }
-
-        else if (max_hue < 180)
-        {
-            max_r = max_m * 255;
-            max_g = (max_c + max_m) * 255;
-            max_b = (max_x + max_m) * 255;
-        }
-
-        else if (max_hue < 240)
-        {
-            max_r = max_m * 255;
-            max_g = (max_x + max_m) * 255;
-            max_b = (max_c + max_m) * 255;
-        }
-
-        else if (max_hue < 300)
-        {
-            max_r = (max_x + max_m) * 255;
-            max_g = max_m * 255;
-            max_b = (max_c + max_m) * 255;
-        }
-
-        else
-        {
-            max_r = (max_c + max_m) * 255;
-            max_g = max_m * 255;
-            max_b = (max_x + max_m) * 255;
-        }
+        const unsigned int r = (1 - fmaxf(fminf(fminf(kr, 4 - kr), 1), 0)) * (value / 100.0f) * 255;
+        const unsigned int g = (1 - fmaxf(fminf(fminf(kg, 4 - kg), 1), 0)) * (value / 100.0f) * 255;
 
         for (unsigned int i = 0; i < width * height; i++)
         {
-            const unsigned int r = mat.data[i * 3 + 2];
-            const unsigned int g = mat.data[i * 3 + 1];
-            const unsigned int b = mat.data[i * 3];
+            const unsigned int fr = mat.data[i * 3 + 2];
+            const unsigned int fg = mat.data[i * 3 + 1];
 
-            if (r >= min_r && r <= max_r && g >= min_g && g <= max_g && b >= min_b && b <= max_b)
+            if (fr >= r - spread && fr <= r + spread && fg >= g - spread && fg <= g + spread)
             {
                 const int x = i % width;
                 const int y = i / width;
