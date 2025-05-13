@@ -2,9 +2,11 @@
 
 ## Overview
 
-The purpose of this project is to explore the collective synchronization behavior of fireflies. Inspired by fireflies observed in Thailand, the goal is to experimentally investigate the order parameter and use a low-latency system to induce patterns in the fireflies.
+The goal of this project is to develop a low-latency, closed-loop system that enables researchers at the Northwestern Institute on Complex Systems to conduct real-time experiments on firefly synchronization. Motivated by observations of synchronized flashing in fireflies from Thailand, the system is designed to investigate the emergence of collective behavior by measuring and modulating the system’s order parameter.
 
-This system allows researchers to run experiments on the synchronization of fireflies. Prior to the development of this system, researchers at the Northwestern Institute of Complex Systems have run closed loop experiments that were unable to react to the flashes of the fireflies. The goal of this system is to track the fireflies in real time and update the LEDs accordingly. The specific design of the experiment is left to the researchers, and can be written in Python to interface with the existing project structure.
+The system integrates a high-speed camera to track individual firefly flashes and a real-time processing pipeline that analyzes this data and triggers LED responses with minimal delay. To achieve the required responsiveness, all core components responsible for flash detection and data processing are implemented in C++. This design decision ensures sub-10 millisecond latency, which is critical for responsively reacting to the natural flashing rhythms of the fireflies.
+
+To make experimentation accessible to researchers with limited programming experience, the experimental logic is exposed via a Python interface. Researchers can define and modify experiment protocols in Python without interacting directly with the C++ core, allowing for rapid iteration and ease of use while maintaining high system performance.
 
 ## Demo
 
