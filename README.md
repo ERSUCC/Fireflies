@@ -50,6 +50,7 @@ Make sure to install all of these dependencies
 The published version of the project is as follows:
 
 Fireflies
+```bash
 ├── experiments
 │   └── mirror_experiment.py
 ├── include
@@ -63,6 +64,7 @@ Fireflies
 ├── .gitignore
 ├── CMakeLists.txt
 └── README.md
+```
 
 The `raspberry_pi` directory contains code that runs on the Raspberry Pi, as opposed to the computer. The `experiments` directory is where researchers can add their own experiments. The `src` and `include` directories contain the source code for the detection and analysis of firefly flashes that runs on the computer.
 
