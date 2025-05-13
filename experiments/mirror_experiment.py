@@ -30,9 +30,6 @@ print(mapping)
 
 while (True):
 
-    # print("Please enter Firefly IDs separated by commas")
-    # user_input = input()
-    # input_firefly_ids = list(map(int, user_input.split(',')))
     input_firefly_ids = [i for i in range(10)]
     input_led_ids = [mapping[firefly_id] for firefly_id in input_firefly_ids]
 

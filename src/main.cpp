@@ -130,7 +130,7 @@ int main(int argc, char** argv)
 
             if (current->id < 10)
             {
-                std::cout << current->id << "\n";
+                std::cout << current->id << std::endl;
             }
 
             current = current->next;
