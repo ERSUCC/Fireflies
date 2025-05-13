@@ -49,8 +49,8 @@ Make sure to install all of these dependencies
 
 The published version of the project is as follows:
 
-Fireflies
 ```bash
+Fireflies
 ├── experiments
 │   └── mirror_experiment.py
 ├── include
